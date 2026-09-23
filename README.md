@@ -9,12 +9,15 @@ It analyzes your recent failed submissions (WA/TLE) on Codeforces to identify yo
 3. **Recommend:** Prompts Gemini to evaluate those weak points and suggest 5 problems slightly
    above your current rating.
 
-> Two things worth knowing about step 3. The problem names, ratings and links come from the
-> model, not from the Codeforces problemset API, so a suggested link can point at a problem that
-> does not exist — open them before trusting the list. And step 2 counts tags per *submission*,
-> so a problem you failed five times weighs five times as much as one you failed once. Both are
-> fixable by checking the recommendations against `problemset.problems` and by counting each
-> problem once; neither is done yet.
+4. **Verify:** every suggestion is matched against `problemset.problems` before you see it. The
+   model writes the names and links, and left unchecked it will invent a contest id — so a match
+   is rewritten with the canonical name, rating and link, and anything with no match is dropped
+   rather than shown as a link that 404s.
+
+> **How weakness is measured.** Tags are counted once per *problem*, not per submission, and any
+> problem you went on to solve is excluded. Counting submissions let one problem you retried five
+> times outweigh five different problems you each failed once — and a problem you eventually solved
+> is not a weakness at all.
 
 ## Tech Stack
 - Next.js 14 (App Router)
